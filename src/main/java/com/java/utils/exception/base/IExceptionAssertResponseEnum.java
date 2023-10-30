@@ -1,4 +1,4 @@
-package org.java.utils.exception.base;
+package com.java.utils.exception.base;
 
 /**
  * <b><code>IResponseEnum</code></b>

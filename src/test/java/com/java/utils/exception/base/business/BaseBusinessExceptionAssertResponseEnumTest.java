@@ -1,6 +1,6 @@
-package org.java.utils.exception.base.business;
+package com.java.utils.exception.base.business;
 
-import org.java.utils.exception.base.BaseException;
+import com.java.utils.exception.base.BaseException;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
