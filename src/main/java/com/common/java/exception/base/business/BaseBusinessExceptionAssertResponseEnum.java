@@ -1,4 +1,4 @@
-package com.java.utils.exception.base.business;
+package com.common.java.exception.base.business;
 
 /**
  * <b><code>BusinessExceptionAssertResponseEnum</code></b>
