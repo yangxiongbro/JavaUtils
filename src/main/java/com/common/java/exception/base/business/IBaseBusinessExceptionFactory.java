@@ -1,8 +1,8 @@
-package com.java.utils.exception.base.business;
+package com.common.java.exception.base.business;
 
-import com.java.utils.exception.base.BaseException;
-import com.java.utils.exception.base.IBaseAssert;
-import com.java.utils.exception.base.IExceptionAssertResponseEnum;
+import com.common.java.exception.base.BaseException;
+import com.common.java.exception.base.IBaseAssert;
+import com.common.java.exception.base.IExceptionAssertResponseEnum;
 
 import java.text.MessageFormat;
 

@@ -1,4 +1,4 @@
-package com.java.utils.exception.base;
+package com.common.java.exception.base;
 
 /**
  * <b><code>IBaseException</code></b>
