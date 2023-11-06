@@ -12,7 +12,11 @@ package com.common.java.response;
  */
 public class QR<T> extends R<QueryData<T>>{
 
-    public QR(int code, String message) {
-        super(code, message);
+    public QR(QueryData<T> data) {
+        super(data);
+    }
+
+    public QR(int code, String message, QueryData<T> data) {
+        super(code, message, data);
     }
 }

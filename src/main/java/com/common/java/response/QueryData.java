@@ -1,9 +1,11 @@
 package com.common.java.response;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.github.pagehelper.PageInfo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * <b><code>QueryDdata</code></b>
@@ -41,17 +43,84 @@ public class QueryData<T> {
      */
     private List<T> records;
 
-    QueryData(IPage page){
+    QueryData(IPage<T> page){
+        setPage(page);
+        this.records = page.getRecords();
+    }
+
+    QueryData(PageInfo<T> page){
+        setPage(page);
+        this.records = page.getList();
+    }
+
+    <PT> QueryData(IPage<PT> page, Function<PT, T> convertFun){
+        setPage(page);
+        setRecords(page.getRecords(), convertFun);
+    }
+
+    <PT> QueryData(PageInfo<PT> page, Function<PT, T> convertFun){
+        setPage(page);
+        setRecords(page.getList(), convertFun);
+    }
+
+    private void setPage(IPage<?> page){
         this.totalCount = page.getTotal();
         this.pages = page.getPages();
         this.pageNo = page.getCurrent();
         this.pageSize = page.getSize();
-        List<?> oldRecordList = page.getRecords();
+    }
+
+    private void setPage(PageInfo<?> page){
+        this.totalCount = page.getTotal();
+        this.pages = page.getPages();
+        this.pageNo = page.getPageNum();
+        this.pageSize = page.getPageSize();
+    }
+
+    private <PT> void setRecords(List<PT> oldRecordList, Function<PT, T> convertFun){
         this.records = new ArrayList<>(oldRecordList.size());
-        for(Object item : oldRecordList){
-            
+        for(PT item : oldRecordList){
+            this.records.add(convertFun.apply(item));
         }
     }
 
+    public long getTotalCount() {
+        return totalCount;
+    }
 
+    public void setTotalCount(long totalCount) {
+        this.totalCount = totalCount;
+    }
+
+    public long getPages() {
+        return pages;
+    }
+
+    public void setPages(long pages) {
+        this.pages = pages;
+    }
+
+    public long getPageNo() {
+        return pageNo;
+    }
+
+    public void setPageNo(long pageNo) {
+        this.pageNo = pageNo;
+    }
+
+    public long getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(long pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public List<T> getRecords() {
+        return records;
+    }
+
+    public void setRecords(List<T> records) {
+        this.records = records;
+    }
 }

@@ -1,5 +1,7 @@
 package com.common.java.response;
 
+import com.common.java.enums.response.HttpStatus;
+
 /**
  * <b><code>CommonResponse</code></b>
  * <p/>
@@ -14,7 +16,12 @@ public class R<T> extends BaseResponse{
 
     private T data;
 
-    public R(int code, String message) {
+    public R(T data) {
+        this(HttpStatus.OK.getValue() * 10000, HttpStatus.OK.toString(), data);
+    }
+
+    public R(int code, String message, T data) {
         super(code, message);
+        this.data = data;
     }
 }
