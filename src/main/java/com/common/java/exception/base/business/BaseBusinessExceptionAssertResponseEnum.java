@@ -14,17 +14,17 @@ public enum BaseBusinessExceptionAssertResponseEnum implements IBaseBusinessExce
     /**
      * 通用异常
      */
-    EXCEPTION(100001, "{0}"),
+    EXCEPTION(5000001, "{0}"),
 
     /**
      * 未找到文件
      */
-    FILE_NOT_FOUND(200001, "未找到文件:{0}."),
+    NOT_FOUND_FILE(4040001, "未找到文件:{0}."),
 
     /**
      * 未找到文件
      */
-    FILE_NOT_FOUND_IN_DIR(200002, "在目录:{0},未找到文件:{1}.");
+    NOT_FOUND_FILE_IN_DIR(4040002, "在目录:{0},未找到文件:{1}.");
 
     /**
      * 返回码

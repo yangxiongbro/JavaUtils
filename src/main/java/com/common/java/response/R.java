@@ -16,6 +16,10 @@ public class R<T> extends BaseResponse{
 
     private T data;
 
+    public R(){
+
+    }
+
     public R(T data) {
         this(HttpStatus.OK.getValue() * 10000, HttpStatus.OK.toString(), data);
     }

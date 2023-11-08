@@ -16,6 +16,10 @@ public class BaseResponse {
 
     private String message;
 
+    public BaseResponse(){
+
+    }
+
     public BaseResponse(int code, String message) {
         this.code = code;
         this.message = message;
