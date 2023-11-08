@@ -21,13 +21,13 @@ public class BaseBusinessExceptionAssertResponseEnumTest {
     @Test
     public void assertNotNull() throws BaseException {
         Object obj = null;
-        BaseBusinessExceptionAssertResponseEnum.NOT_FOUND_FILE.assertNotNull(obj, "消息");
+        BaseBusinessExceptionAssertResponseEnum.FILE_NOT_FOUND.assertNotNull(obj, "消息");
     }
 
     @Test
     public void assertNotNull2() throws BaseException {
         Object obj = null;
-        BaseBusinessExceptionAssertResponseEnum.NOT_FOUND_FILE_IN_DIR.assertNotNull(obj, "目录", "文件名");
+        BaseBusinessExceptionAssertResponseEnum.FILE_NOT_FOUND_IN_DIR.assertNotNull(obj, "目录", "文件名");
     }
 
     @Test
