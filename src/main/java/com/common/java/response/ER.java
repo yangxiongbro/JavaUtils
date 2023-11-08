@@ -11,6 +11,10 @@ package com.common.java.response;
  * @since CommonJava 1.0
  */
 public class ER extends BaseResponse{
+    public ER() {
+        super();
+    }
+
     public ER(int code, String message) {
         super(code, message);
     }

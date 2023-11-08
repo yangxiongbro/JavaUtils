@@ -43,6 +43,10 @@ public class QueryData<T> {
      */
     private List<T> records;
 
+    QueryData(){
+
+    }
+
     QueryData(IPage<T> page){
         setPage(page);
         this.records = page.getRecords();
