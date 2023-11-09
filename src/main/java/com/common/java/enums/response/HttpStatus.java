@@ -200,7 +200,7 @@ public enum HttpStatus {
     BAD_GATEWAY(502),
 
     // Service Unavailable
-    // 错误网关
+    // 服务不可用
     SERVICE_UNAVAILABLE(503),
 
     // Gateway Timeout
