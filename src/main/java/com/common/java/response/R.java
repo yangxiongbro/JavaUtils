@@ -1,6 +1,6 @@
 package com.common.java.response;
 
-import com.common.java.enums.response.HttpStatus;
+import com.common.java.exception.base.business.CommonResponseEnum;
 
 /**
  * <b><code>CommonResponse</code></b>
@@ -21,7 +21,7 @@ public class R<T> extends BaseResponse{
     }
 
     public R(T data) {
-        this(HttpStatus.OK.getValue() * 10000, HttpStatus.OK.toString(), data);
+        this(CommonResponseEnum.OK.getCode(), CommonResponseEnum.OK.toString(), data);
     }
 
     public R(int code, String message, T data) {

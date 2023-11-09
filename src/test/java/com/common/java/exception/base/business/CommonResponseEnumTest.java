@@ -17,53 +17,53 @@ import java.util.List;
  * @author yang xiong
  * @since JavaUtils 1.0
  */
-public class BaseBusinessExceptionAssertResponseEnumTest {
+public class CommonResponseEnumTest {
     @Test
     public void assertNotNull() throws BaseException {
         Object obj = null;
-        BaseBusinessExceptionAssertResponseEnum.FILE_NOT_FOUND.assertNotNull(obj, "消息");
+        CommonResponseEnum.FILE_NOT_FOUND.assertNotNull(obj, "消息");
     }
 
     @Test
     public void assertNotNull2() throws BaseException {
         Object obj = null;
-        BaseBusinessExceptionAssertResponseEnum.FILE_NOT_FOUND_IN_DIR.assertNotNull(obj, "目录", "文件名");
+        CommonResponseEnum.FILE_NOT_FOUND_IN_DIR.assertNotNull(obj, "目录", "文件名");
     }
 
     @Test
     public void assertNull() throws BaseException {
         Object obj = new Object();
-        BaseBusinessExceptionAssertResponseEnum.EXCEPTION.assertNull(obj, "消息");
+        CommonResponseEnum.INTERNAL_SERVER_ERROR.assertNull(obj, "消息");
     }
 
     @Test
     public void assertFalse() throws BaseException {
         Boolean flag = true;
-        BaseBusinessExceptionAssertResponseEnum.EXCEPTION.assertFalse(flag, "消息");
+        CommonResponseEnum.INTERNAL_SERVER_ERROR.assertFalse(flag, "消息");
     }
 
     @Test
     public void assertTrue() throws BaseException {
         Boolean flag = false;
-        BaseBusinessExceptionAssertResponseEnum.EXCEPTION.assertTrue(flag, "消息");
+        CommonResponseEnum.INTERNAL_SERVER_ERROR.assertTrue(flag, "消息");
     }
 
     @Test
     public void assertNotEmpty() throws BaseException {
         List<Object> list = null;
-        BaseBusinessExceptionAssertResponseEnum.EXCEPTION.assertNotEmpty(list, "消息");
+        CommonResponseEnum.INTERNAL_SERVER_ERROR.assertNotEmpty(list, "消息");
     }
 
     @Test
     public void assertNotEmpty2() throws BaseException {
         List<Object> list = new ArrayList<>();
-        BaseBusinessExceptionAssertResponseEnum.EXCEPTION.assertNotEmpty(list, "消息");
+        CommonResponseEnum.INTERNAL_SERVER_ERROR.assertNotEmpty(list, "消息");
     }
 
     @Test
     public void assertEmpty() throws BaseException {
         List<Object> list = Collections.singletonList(new Object());
-        BaseBusinessExceptionAssertResponseEnum.EXCEPTION.assertEmpty(list, "消息");
+        CommonResponseEnum.INTERNAL_SERVER_ERROR.assertEmpty(list, "消息");
     }
 
 }

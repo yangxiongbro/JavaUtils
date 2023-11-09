@@ -16,6 +16,11 @@ public abstract class BaseException extends Exception {
     private String message;
     private Throwable cause;
 
+    public BaseException(IExceptionAssertResponseEnum exceptionAssertResponseEnum){
+        this.exceptionAssertResponseEnum = exceptionAssertResponseEnum;
+        this.message = exceptionAssertResponseEnum.toString();
+    }
+
     public BaseException(IExceptionAssertResponseEnum exceptionAssertResponseEnum, Object[] args, String message){
         this.exceptionAssertResponseEnum = exceptionAssertResponseEnum;
         this.args = args;

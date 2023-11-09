@@ -12,15 +12,15 @@ import com.common.java.exception.base.IExceptionAssertResponseEnum;
  *
  * @author yang xiong
  */
-public class BaseBusinessException extends BaseException {
+public class CommonException extends BaseException {
 
     private static final long serialVersionUID = 1L;
 
-    public BaseBusinessException(IExceptionAssertResponseEnum exceptionAssertResponseEnum, Object[] args, String message) {
+    public CommonException(IExceptionAssertResponseEnum exceptionAssertResponseEnum, Object[] args, String message) {
         super(exceptionAssertResponseEnum, args, message);
     }
 
-    public BaseBusinessException(IExceptionAssertResponseEnum exceptionAssertResponseEnum, Object[] args, String message, Throwable cause) {
+    public CommonException(IExceptionAssertResponseEnum exceptionAssertResponseEnum, Object[] args, String message, Throwable cause) {
         super(exceptionAssertResponseEnum, args, message, cause);
     }
 }
