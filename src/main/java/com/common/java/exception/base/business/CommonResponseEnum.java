@@ -134,14 +134,19 @@ public enum CommonResponseEnum implements ICommonExceptionFactory {
     BAD_REQUEST(4000000, null),
 
     /**
+     * 参数异常
+     */
+    ARGUE_ERROR(4000010, null),
+
+    /**
      * 参数校验异常
      */
-    ARGUE_VALID_ERROR(4000010, null),
+    ARGUE_VALID_ERROR(4000011, null),
 
     /**
      * 参数绑定异常
      */
-    ARGUE_Binding_ERROR(4000020, null),
+    ARGUE_BINDING_ERROR(4000012, null),
 
     /**
      * Unauthorized
