@@ -15,18 +15,18 @@ import java.text.MessageFormat;
  *
  * @author yang xiong
  */
-public interface IBaseBusinessExceptionFactory extends IExceptionAssertResponseEnum, IBaseAssert {
+public interface ICommonExceptionFactory extends IExceptionAssertResponseEnum, IBaseAssert {
     @Override
     default BaseException newException(Object... args) {
         String msg = MessageFormat.format(this.getMessage(), args);
 
-        return new BaseBusinessException(this, args, msg);
+        return new CommonException(this, args, msg);
     }
 
     @Override
     default BaseException newException(Throwable t, Object... args) {
         String msg = MessageFormat.format(this.getMessage(), args);
 
-        return new BaseBusinessException(this, args, msg, t);
+        return new CommonException(this, args, msg, t);
     }
 }
