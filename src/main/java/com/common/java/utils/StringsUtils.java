@@ -19,6 +19,18 @@ import java.util.Set;
 public class StringsUtils {
 
     /**
+     * @description: 大驼峰命名法转全部大写命名法
+     * @param: str - [String]
+     * @return: java.lang.String
+     * @throws
+     * @author yang xiong
+     * @date 2023/11/23 0:07
+     **/
+    public static String upperCamelCase2allCapsCase(String str){
+        return allCapsCase(split(str, StringsConstants.UPPER_CHAR_SET));
+    }
+
+    /**
      * @description: 小驼峰命名法
      * 驼峰命名法是一种常见的变量命名风格，它的特点是将多个单词连接在一起，每个单词的首字母大写，除了第一个单词的首字母小写
      * 例如: firstName、enabled

@@ -33,7 +33,15 @@ public class StringsUtilsTest {
     };
 
     private String strArray[] = new String[]{null, "", "  ", " first", " first ", "first name", " first name", " first name ", "name"
-            , " First",  "firsT ", " FirsT ", "First Name", " First name", " First namE ", "NAME"};
+            , " First",  "firsT ", " FirsT ", "First Name", " First name", " First namE ", "NAME"
+            , "NoHandlerFoundException", " NoHandlerFoundException ", " noHandlerFoundException "};
+
+    @Test
+    public void upperCamelCase2allCapsCase(){
+        for(String str:strArray){
+            log.info("{} -> {}", str, StringsUtils.upperCamelCase2allCapsCase(str));
+        }
+    }
 
     @Test
     public void lowerCamelCase(){
