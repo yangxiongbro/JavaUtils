@@ -14,6 +14,15 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class ThreadsUtils {
+
+    /**
+     * @description: Thread.sleep(millis)
+     * @param: millis - [long]
+     * @return: boolean
+     * @throws
+     * @author yang xiong
+     * @date 2023/11/21 22:10
+     **/
     public static boolean sleep(long millis) {
         boolean result = true;
         if (millis > 0L) {
