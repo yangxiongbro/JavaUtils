@@ -5,7 +5,7 @@
  -->
 <Configuration status="OFF">
 
-    <property name="logging.path" value="logs" />
+    <property name="logging.path" value="${common.log.home:-./logs}"/>
 
     <!-- %d{yyyy-MM-dd HH:mm:ss.SSS} 日志输出时间 -->
     <!-- %thread 输出日志的进程名字，这在Web应用以及异步任务处理中很有用 -->
@@ -57,10 +57,13 @@
         </rollingPolicy>
     </appender>
 
-    <logger name="!com.common.java" level="FATAL"/>
+    <logger name="!com.common.java" level="OFF"/>
 
-    <root level="INFO">
+    <!-- root节点是必选节点，用来指定最基础的日志输出级别 -->
+    <!-- level:默认是DEBUG -->
+    <root level="${common.log.level:-DEBUG}">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FULL_FILE"/>
     </root>
+
 </Configuration>
