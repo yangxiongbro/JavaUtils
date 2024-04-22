@@ -61,8 +61,8 @@ public class PlayInfo {
     @JsonProperty("PartNo")
     private String partNo;            // videoInfo.p
 
-    @JsonProperty("PartNam")
-    private String partNam;           // videoinfo.title "回家的路，永远为你照亮前方"
+    @JsonProperty("PartName")
+    private String partName;           // videoinfo.title "回家的路，永远为你照亮前方"
 
     @JsonProperty("Format")
     private Integer format;            // 2

@@ -45,7 +45,7 @@ public class DviInfo {
     private String description; // null
 
     @JsonProperty("CoverURL")
-    private String coverURL;    // videoinfo.coverUrl "http://i1.hdslb.com/bfs/archive/8a559bcf10b342563ff863fec52d5e16952ef28f.jpg"
+    private String coverURL;    // videoinfo.groupCoverUrl "http://i1.hdslb.com/bfs/archive/8a559bcf10b342563ff863fec52d5e16952ef28f.jpg"
 
     @JsonProperty("Tag")
     private String tag;         // null

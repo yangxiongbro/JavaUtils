@@ -42,4 +42,28 @@ public class PlayMediaInfo {
 
     @JsonProperty("FrameRate")
     private BigDecimal frameRate;      // .playurl.data.dash.audio.frame_rate 0.0
+
+    public static PlayMediaInfo getDefaultAudioInfo(){
+        return new PlayMediaInfo(
+                1,
+                0,
+                "mp4a.40.2",
+                0,
+                0,
+                0,
+                new BigDecimal("0.0")
+        );
+    }
+
+    public static PlayMediaInfo getDefaultVideoInfo(){
+        return new PlayMediaInfo(
+                0,
+                12,
+                "hev1.1.6.L150.90",
+                1920,
+                1080,
+                0,
+                new BigDecimal("30.303")
+        );
+    }
 }

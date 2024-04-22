@@ -2,9 +2,8 @@ package com.common.java.tools.bilibili_convertor;
 
 import com.common.java.utils.DateTimeUtils;
 import com.common.java.utils.FilesUtils;
-import com.common.java.vo.bilibili_convertor.desktop.PlayUrlDataFormatInfo;
-import com.common.java.vo.bilibili_convertor.desktop.PlayUrlInfo;
-import com.common.java.vo.bilibili_convertor.desktop.VideoInfo;
+import com.common.java.utils.StringsUtils;
+import com.common.java.vo.bilibili_convertor.desktop.*;
 import com.common.java.vo.bilibili_convertor.uwp.DviInfo;
 import com.common.java.vo.bilibili_convertor.uwp.PlayInfo;
 import com.common.java.vo.bilibili_convertor.uwp.PlayMediaInfo;
@@ -33,46 +32,59 @@ import java.util.stream.Collectors;
  */
 public class BilibiliConvertor {
 
-    public void convert(String source, String target) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
+    private ObjectMapper mapper = new ObjectMapper();
 
+    public void convert(String target, Map<String, List<VideoInfo>> videoInfoMap, Map<String, Map<Long, PlayUrlInfo>> playUrlInfoMap, Map<String, Map<Long, File>> coverFileMap) throws JsonProcessingException {
         FilesUtils.mkdirs(target);
-        Map<String, Map<String, File>> pathFileMap = packageFile(source);
-        for(Map.Entry<String, Map<String, File>> pathFileEntry: pathFileMap.entrySet()){
-            System.out.println(pathFileEntry.getKey());
-            Map<String, File> pathMap = pathFileEntry.getValue();
-            File playUrlFile = pathMap.get(".playurl");
-            File videoInfoFile = pathMap.get(".videoInfo");
-            File coverFile = pathMap.get("image.jpg");
-            if(null == playUrlFile || null == videoInfoFile || !playUrlFile.exists() || !videoInfoFile.exists()){
-                continue;
+        Comparator comparator = new Comparator<VideoInfo>() {
+            @Override
+            public int compare(VideoInfo o1, VideoInfo o2) {
+                return o1.getP() - o2.getP();
             }
-            PlayUrlInfo playUrlInfo = mapper.readValue(FilesUtils.readStringUseNio(playUrlFile.getPath(), FilesUtils.CHARSET_NAME), PlayUrlInfo.class);
-            VideoInfo videoInfo = mapper.readValue(FilesUtils.readStringUseNio(videoInfoFile.getPath(), FilesUtils.CHARSET_NAME), VideoInfo.class);
-            System.out.println(playUrlInfo);
-            System.out.println(videoInfo);
-            DviInfo dviInfo = getDviInfo(videoInfo);
-            String desktopIniInfo = getDesktopIniInfo(videoInfo);
-            String dmInfo = getDmInfo(videoInfo);
-            PlayInfo playInfo = getPlayInfo(playUrlInfo, videoInfo);
-            String aid = videoInfo.getAid().toString();
+        };
 
-            String videoInfoDir = target + "\\" + aid;
-            String playInfoDir = videoInfoDir + "\\1";
+        for(Map.Entry<String, List<VideoInfo>> videoInfoGroupEntry:videoInfoMap.entrySet()){
+            String groupId = videoInfoGroupEntry.getKey();
+            List<VideoInfo> videoInfoList = videoInfoGroupEntry.getValue();
+            Collections.sort(videoInfoList, comparator);
+            Map<Long, PlayUrlInfo> playUrlInfoGroupMap = playUrlInfoMap.get(groupId);
+            Map<Long, File> coverFileGroupMap = coverFileMap.get(groupId);
+            VideoInfo firstVideoInfo = videoInfoList.get(0);
+
+            DviInfo dviInfo = getDviInfo(firstVideoInfo);
+            String desktopIniInfo = getDesktopIniInfo(firstVideoInfo);
+
+            Long groupAid = firstVideoInfo.getAid();
+            String videoInfoDir = target + "\\" + groupAid;
+            System.out.println(videoInfoDir);
             FilesUtils.mkdir(videoInfoDir);
-            FilesUtils.mkdir(playInfoDir);
-            FilesUtils.writeAllLinesUseNio(videoInfoDir + "\\" + aid + ".dvi",
+            FilesUtils.writeAllLinesUseNio(videoInfoDir + "\\" + groupAid + ".dvi",
                     mapper.writeValueAsString(dviInfo), FilesUtils.CHARSET_NAME, StandardOpenOption.CREATE);
             FilesUtils.writeAllLinesUseNio(videoInfoDir + "\\desktop.ini",
                     desktopIniInfo, FilesUtils.CHARSET_NAME, StandardOpenOption.CREATE);
-            FilesUtils.writeAllLinesUseNio(playInfoDir + "\\" + aid + "_1.xml",
-                    dmInfo, FilesUtils.CHARSET_NAME, StandardOpenOption.CREATE);
-            FilesUtils.writeAllLinesUseNio(playInfoDir + "\\" + aid + ".info",
-                    mapper.writeValueAsString(playInfo), FilesUtils.CHARSET_NAME, StandardOpenOption.CREATE);
-            FilesUtils.writeAllLinesUseNio(playInfoDir + "\\" + videoInfo.getTitle() + ".txt",
-                    videoInfo.getTitle(), FilesUtils.CHARSET_NAME, StandardOpenOption.CREATE);
+            File coverFile = coverFileGroupMap.get(groupAid);
             if(null != coverFile && coverFile.exists()){
                 FilesUtils.copyUseNio(coverFile.getPath(), videoInfoDir + "\\cover.jpg", StandardCopyOption.REPLACE_EXISTING);
+            }
+            boolean IsSinglePart = videoInfoList.size() > 1 ? false : true;
+            for(VideoInfo videoInfo:videoInfoList){
+                Long aid = videoInfo.getAid();
+                PlayUrlInfo playUrlInfo = playUrlInfoGroupMap.get(aid);
+                System.out.println(videoInfo);
+                System.out.println(playUrlInfo);
+                String dmInfo = getDmInfo(videoInfo);
+                PlayInfo playInfo = getPlayInfo(playUrlInfo, videoInfo, IsSinglePart);
+
+                Integer p = videoInfo.getP();
+                String playInfoDir = videoInfoDir + "\\" + p;
+                FilesUtils.mkdir(playInfoDir);
+
+                FilesUtils.writeAllLinesUseNio(playInfoDir + "\\" + groupAid + "_" + p + ".xml",
+                        dmInfo, FilesUtils.CHARSET_NAME, StandardOpenOption.CREATE);
+                FilesUtils.writeAllLinesUseNio(playInfoDir + "\\" + groupAid + ".info",
+                        mapper.writeValueAsString(playInfo), FilesUtils.CHARSET_NAME, StandardOpenOption.CREATE);
+                FilesUtils.writeAllLinesUseNio(playInfoDir + "\\" + videoInfo.getTitle() + ".txt",
+                        videoInfo.getTitle(), FilesUtils.CHARSET_NAME, StandardOpenOption.CREATE);
             }
         }
     }
@@ -90,17 +102,35 @@ public class BilibiliConvertor {
         return pathFileMap;
     }
 
+    public void parseInfo(Map<String, Map<String, File>> pathFileMap,
+                          Map<String, List<VideoInfo>> videoInfoMap, Map<String, Map<Long, PlayUrlInfo>> playUrlInfoMap, Map<String, Map<Long, File>> coverFileMap) throws JsonProcessingException {
+        for(Map.Entry<String, Map<String, File>> pathFileEntry: pathFileMap.entrySet()) {
+            Map<String, File> pathMap = pathFileEntry.getValue();
+            File playUrlFile = pathMap.get(".playurl");
+            File videoInfoFile = pathMap.get(".videoInfo");
+            File coverFile = pathMap.get("image.jpg");
+            if (null == playUrlFile || null == videoInfoFile || !playUrlFile.exists() || !videoInfoFile.exists()) {
+                continue;
+            }
+            PlayUrlInfo playUrlInfo = mapper.readValue(FilesUtils.readStringUseNio(playUrlFile.getPath(), FilesUtils.CHARSET_NAME), PlayUrlInfo.class);
+            VideoInfo videoInfo = mapper.readValue(FilesUtils.readStringUseNio(videoInfoFile.getPath(), FilesUtils.CHARSET_NAME), VideoInfo.class);
+            videoInfoMap.computeIfAbsent(videoInfo.getGroupId(), k -> new ArrayList<>()).add(videoInfo);
+            playUrlInfoMap.computeIfAbsent(videoInfo.getGroupId(), k -> new HashMap()).put(videoInfo.getAid(), playUrlInfo);
+            coverFileMap.computeIfAbsent(videoInfo.getGroupId(), k -> new HashMap()).put(videoInfo.getAid(), coverFile);
+        }
+    }
+
     public DviInfo getDviInfo(VideoInfo videoInfo){
         return new DviInfo(
                 videoInfo.getAid().toString(),
                 videoInfo.getBvId(),
                 null,
                 null,
-                videoInfo.getTitle(),
+                videoInfo.getGroupTitle(),
                 videoInfo.getUname(),
                 videoInfo.getUid(),
                 null,
-                videoInfo.getCoverUrl(),
+                videoInfo.getGroupCoverUrl(),
                 null,
                 videoInfo.getPubDate() - 1412092800,
                 DateTimeUtils.YMD_DASH_HM_COLON_DTF.format(LocalDateTime.ofEpochSecond(videoInfo.getPubDate(), 0, ZoneOffset.ofHours(8))),
@@ -111,7 +141,7 @@ public class BilibiliConvertor {
         );
     }
 
-    public PlayInfo getPlayInfo(PlayUrlInfo playUrlInfo, VideoInfo videoInfo){
+    public PlayInfo getPlayInfo(PlayUrlInfo playUrlInfo, VideoInfo videoInfo, boolean IsSinglePart){
         return new PlayInfo(
                 0,
                 videoInfo.getAid().toString(),
@@ -135,33 +165,16 @@ public class BilibiliConvertor {
                 Collections.singletonList(playUrlInfo.getData().getTimeLength()),
                 videoInfo.getTotalSize(),
                 null,
-                true,
+                IsSinglePart,
                 false,
                 true,
-                new PlayMediaInfo(
-                        0,
-                        playUrlInfo.getData().getDash().getVideo().get(0).getCodecId(),
-                        getCodecName(playUrlInfo.getData().getSupportFormats(), playUrlInfo.getData().getQuality(), playUrlInfo.getData().getFormat()),
-                        playUrlInfo.getData().getDash().getVideo().get(0).getWidth(),
-                        playUrlInfo.getData().getDash().getVideo().get(0).getHeight(),
-                        playUrlInfo.getData().getDash().getVideo().get(0).getBandWidth(),
-                        new BigDecimal(playUrlInfo.getData().getDash().getVideo().get(0).getFrameRate())
-                ),
-                Collections.singletonList(new PlayMediaInfo(
-                        1,
-                        playUrlInfo.getData().getDash().getAudio().get(0).getCodecId(),
-                        playUrlInfo.getData().getDash().getAudio().get(0).getCodecs(),
-                        playUrlInfo.getData().getDash().getAudio().get(0).getWidth(),
-                        playUrlInfo.getData().getDash().getAudio().get(0).getHeight(),
-                        playUrlInfo.getData().getDash().getAudio().get(0).getBandWidth(),
-                null
-//                        new BigDecimal(playUrlInfo.getData().getDash().getAudio().get(0).getFrameRate())
-                ))
+                getVideoInfo(playUrlInfo),
+                Collections.singletonList(getAudioInfo(playUrlInfo))
         );
     }
 
     public String getDesktopIniInfo(VideoInfo videoInfo){
-        return String.format("[.ShellClassInfo]\nInfoTip=%s\n[ViewState]=\nMode=\nVid=\nFolderType=Generic", videoInfo.getTitle());
+        return String.format("[.ShellClassInfo]\nInfoTip=%s\n[ViewState]=\nMode=\nVid=\nFolderType=Generic", videoInfo.getGroupTitle());
     }
 
     public String getDmInfo(VideoInfo videoInfo){
@@ -180,4 +193,63 @@ public class BilibiliConvertor {
         }
         return null;
     }
+
+    private PlayMediaInfo getAudioInfo(PlayUrlInfo playUrlInfo){
+        PlayUrlDataInfo playUrlDataInfo = playUrlInfo.getData();
+        if(null == playUrlDataInfo){
+            return PlayMediaInfo.getDefaultAudioInfo();
+        }
+        PlayUrlDataDashInfo playUrlDataDashInfo = playUrlDataInfo.getDash();
+        if(null == playUrlDataDashInfo){
+            return PlayMediaInfo.getDefaultAudioInfo();
+        }
+        List<PlayUrlDataDashMediaInfo> playUrlDataDashMediaInfoList = playUrlDataDashInfo.getAudio();
+        if(null == playUrlDataDashMediaInfoList || playUrlDataDashMediaInfoList.size()<1){
+            return PlayMediaInfo.getDefaultAudioInfo();
+        }
+        PlayUrlDataDashMediaInfo playUrlDataDashMediaInfo = playUrlDataDashMediaInfoList.get(0);
+        if(null == playUrlDataDashMediaInfo){
+            return PlayMediaInfo.getDefaultAudioInfo();
+        }
+
+        return new PlayMediaInfo(
+                1,
+                playUrlDataDashMediaInfo.getCodecId(),
+                playUrlDataDashMediaInfo.getCodecs(),
+                playUrlDataDashMediaInfo.getWidth(),
+                playUrlDataDashMediaInfo.getHeight(),
+                playUrlDataDashMediaInfo.getBandWidth(),
+                new BigDecimal(StringsUtils.isNotEmpty(playUrlDataDashMediaInfo.getFrameRate())?playUrlDataDashMediaInfo.getFrameRate():"0.0")
+        );
+    }
+
+    private PlayMediaInfo getVideoInfo(PlayUrlInfo playUrlInfo){
+        PlayUrlDataInfo playUrlDataInfo = playUrlInfo.getData();
+        if(null == playUrlDataInfo){
+            return PlayMediaInfo.getDefaultVideoInfo();
+        }
+        PlayUrlDataDashInfo playUrlDataDashInfo = playUrlDataInfo.getDash();
+        if(null == playUrlDataDashInfo){
+            return PlayMediaInfo.getDefaultVideoInfo();
+        }
+        List<PlayUrlDataDashMediaInfo> playUrlDataDashMediaInfoList = playUrlDataDashInfo.getVideo();
+        if(null == playUrlDataDashMediaInfoList || playUrlDataDashMediaInfoList.size()<1){
+            return PlayMediaInfo.getDefaultVideoInfo();
+        }
+        PlayUrlDataDashMediaInfo playUrlDataDashMediaInfo = playUrlDataDashMediaInfoList.get(0);
+        if(null == playUrlDataDashMediaInfo){
+            return PlayMediaInfo.getDefaultVideoInfo();
+        }
+
+        return new PlayMediaInfo(
+                0,
+                playUrlDataDashMediaInfo.getCodecId(),
+                getCodecName(playUrlDataInfo.getSupportFormats(), playUrlDataInfo.getQuality(), playUrlDataInfo.getFormat()),
+                playUrlDataDashMediaInfo.getWidth(),
+                playUrlDataDashMediaInfo.getHeight(),
+                playUrlDataDashMediaInfo.getBandWidth(),
+                new BigDecimal(StringsUtils.isNotEmpty(playUrlDataDashMediaInfo.getFrameRate())?playUrlDataDashMediaInfo.getFrameRate():"0.0")
+        );
+    }
+
 }
