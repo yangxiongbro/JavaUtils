@@ -50,8 +50,9 @@ public class BilibiliConvertor {
             Map<Long, PlayUrlInfo> playUrlInfoGroupMap = playUrlInfoMap.get(groupId);
             Map<Long, File> coverFileGroupMap = coverFileMap.get(groupId);
             VideoInfo firstVideoInfo = videoInfoList.get(0);
+            boolean IsSinglePart = videoInfoList.size() > 1 ? false : true;
 
-            DviInfo dviInfo = getDviInfo(firstVideoInfo);
+            DviInfo dviInfo = getDviInfo(firstVideoInfo, IsSinglePart);
             String desktopIniInfo = getDesktopIniInfo(firstVideoInfo);
 
             Long groupAid = firstVideoInfo.getAid();
@@ -66,7 +67,6 @@ public class BilibiliConvertor {
             if(null != coverFile && coverFile.exists()){
                 FilesUtils.copyUseNio(coverFile.getPath(), videoInfoDir + "\\cover.jpg", StandardCopyOption.REPLACE_EXISTING);
             }
-            boolean IsSinglePart = videoInfoList.size() > 1 ? false : true;
             for(VideoInfo videoInfo:videoInfoList){
                 Long aid = videoInfo.getAid();
                 PlayUrlInfo playUrlInfo = playUrlInfoGroupMap.get(aid);
@@ -120,17 +120,17 @@ public class BilibiliConvertor {
         }
     }
 
-    public DviInfo getDviInfo(VideoInfo videoInfo){
+    public DviInfo getDviInfo(VideoInfo videoInfo, boolean IsSinglePart){
         return new DviInfo(
                 videoInfo.getAid().toString(),
                 videoInfo.getBvId(),
                 null,
                 null,
-                videoInfo.getGroupTitle(),
+                IsSinglePart ? videoInfo.getTitle() : videoInfo.getGroupTitle(),
                 videoInfo.getUname(),
                 videoInfo.getUid(),
                 null,
-                videoInfo.getGroupCoverUrl(),
+                IsSinglePart ? videoInfo.getCoverUrl() : videoInfo.getGroupCoverUrl(),
                 null,
                 videoInfo.getPubDate() - 1412092800,
                 DateTimeUtils.YMD_DASH_HM_COLON_DTF.format(LocalDateTime.ofEpochSecond(videoInfo.getPubDate(), 0, ZoneOffset.ofHours(8))),
@@ -149,7 +149,7 @@ public class BilibiliConvertor {
                 videoInfo.getCid().toString(),
                 null,
                 null,
-                videoInfo.getGroupTitle(),
+                videoInfo.getTitle(),
                 videoInfo.getUname(),
                 null,
                 videoInfo.getCoverUrl(),
