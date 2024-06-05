@@ -1,4 +1,4 @@
-package com.common.java.utils;
+package com.common.java.string;
 
 import com.common.java.constants.StringsConstants;
 
@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * <b><code>StringsUtils</code></b>
+ * <b><code>StringsConvertor</code></b>
  * <p/>
  * 字符串工具类
  * <p/>
@@ -16,7 +16,7 @@ import java.util.Set;
  * @author yang xiong
  * @since CommonJava 1.0
  */
-public class StringsUtils {
+public class StringsConvertor {
 
     /**
      * @description: 大驼峰命名法转全部大写命名法
@@ -234,19 +234,12 @@ public class StringsUtils {
     }
 
     public static boolean isNotEmpty(CharSequence str) {
-        return str != null && str.length() > 0 && containsText(str);
-    }
-
-    public static boolean isNotEmpty(String str) {
-        return str != null && !str.isEmpty() && containsText(str);
-    }
-
-    public static boolean containsText(CharSequence str) {
-        int strLen = str.length();
-
-        for(int i = 0; i < strLen; ++i) {
-            if (!Character.isWhitespace(str.charAt(i))) {
-                return true;
+        if(str != null && str.length() > 0){
+            int strLen = str.length();
+            for(int i = 0; i < strLen; ++i) {
+                if (!Character.isWhitespace(str.charAt(i))) {
+                    return true;
+                }
             }
         }
         return false;

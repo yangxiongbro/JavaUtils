@@ -1,4 +1,4 @@
-package com.common.java.utils;
+package com.common.java.file;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -12,7 +12,7 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 /**
- * <b><code>FilesUtils</code></b>
+ * <b><code>FilesOperator</code></b>
  * <p/>
  * 文件工具类
  * <p/>
@@ -22,7 +22,7 @@ import java.util.stream.Stream;
  * @since CommonJava 1.0
  */
 @Slf4j
-public class FilesUtils {
+public class FilesOperator {
 
     public static final String CHARSET_NAME = "UTF-8";
 

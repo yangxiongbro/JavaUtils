@@ -1,8 +1,8 @@
 package com.common.java.tools.bilibili_convertor;
 
-import com.common.java.utils.DateTimeUtils;
-import com.common.java.utils.FilesUtils;
-import com.common.java.utils.StringsUtils;
+import com.common.java.date_time.DateTimeConvertor;
+import com.common.java.file.FilesOperator;
+import com.common.java.string.StringsConvertor;
 import com.common.java.vo.bilibili_convertor.desktop.*;
 import com.common.java.vo.bilibili_convertor.uwp.DviInfo;
 import com.common.java.vo.bilibili_convertor.uwp.PlayInfo;
@@ -35,7 +35,7 @@ public class BilibiliConvertor {
     private ObjectMapper mapper = new ObjectMapper();
 
     public void convert(String target, Map<String, List<VideoInfo>> videoInfoMap, Map<String, Map<Long, PlayUrlInfo>> playUrlInfoMap, Map<String, Map<Long, File>> coverFileMap) throws JsonProcessingException {
-        FilesUtils.mkdirs(target);
+        FilesOperator.mkdirs(target);
         Comparator comparator = new Comparator<VideoInfo>() {
             @Override
             public int compare(VideoInfo o1, VideoInfo o2) {
@@ -58,14 +58,14 @@ public class BilibiliConvertor {
             Long groupAid = firstVideoInfo.getAid();
             String videoInfoDir = target + "\\" + groupAid;
             System.out.println(videoInfoDir);
-            FilesUtils.mkdir(videoInfoDir);
-            FilesUtils.writeAllLinesUseNio(videoInfoDir + "\\" + groupAid + ".dvi",
-                    mapper.writeValueAsString(dviInfo), FilesUtils.CHARSET_NAME, StandardOpenOption.CREATE);
-            FilesUtils.writeAllLinesUseNio(videoInfoDir + "\\desktop.ini",
-                    desktopIniInfo, FilesUtils.CHARSET_NAME, StandardOpenOption.CREATE);
+            FilesOperator.mkdir(videoInfoDir);
+            FilesOperator.writeAllLinesUseNio(videoInfoDir + "\\" + groupAid + ".dvi",
+                    mapper.writeValueAsString(dviInfo), FilesOperator.CHARSET_NAME, StandardOpenOption.CREATE);
+            FilesOperator.writeAllLinesUseNio(videoInfoDir + "\\desktop.ini",
+                    desktopIniInfo, FilesOperator.CHARSET_NAME, StandardOpenOption.CREATE);
             File coverFile = coverFileGroupMap.get(groupAid);
             if(null != coverFile && coverFile.exists()){
-                FilesUtils.copyUseNio(coverFile.getPath(), videoInfoDir + "\\cover.jpg", StandardCopyOption.REPLACE_EXISTING);
+                FilesOperator.copyUseNio(coverFile.getPath(), videoInfoDir + "\\cover.jpg", StandardCopyOption.REPLACE_EXISTING);
             }
             for(VideoInfo videoInfo:videoInfoList){
                 Long aid = videoInfo.getAid();
@@ -77,14 +77,14 @@ public class BilibiliConvertor {
 
                 Integer p = videoInfo.getP();
                 String playInfoDir = videoInfoDir + "\\" + p;
-                FilesUtils.mkdir(playInfoDir);
+                FilesOperator.mkdir(playInfoDir);
 
-                FilesUtils.writeAllLinesUseNio(playInfoDir + "\\" + groupAid + "_" + p + ".xml",
-                        dmInfo, FilesUtils.CHARSET_NAME, StandardOpenOption.CREATE);
-                FilesUtils.writeAllLinesUseNio(playInfoDir + "\\" + groupAid + ".info",
-                        mapper.writeValueAsString(playInfo), FilesUtils.CHARSET_NAME, StandardOpenOption.CREATE);
-                FilesUtils.writeAllLinesUseNio(playInfoDir + "\\" + videoInfo.getTitle() + ".txt",
-                        videoInfo.getTitle(), FilesUtils.CHARSET_NAME, StandardOpenOption.CREATE);
+                FilesOperator.writeAllLinesUseNio(playInfoDir + "\\" + groupAid + "_" + p + ".xml",
+                        dmInfo, FilesOperator.CHARSET_NAME, StandardOpenOption.CREATE);
+                FilesOperator.writeAllLinesUseNio(playInfoDir + "\\" + groupAid + ".info",
+                        mapper.writeValueAsString(playInfo), FilesOperator.CHARSET_NAME, StandardOpenOption.CREATE);
+                FilesOperator.writeAllLinesUseNio(playInfoDir + "\\" + videoInfo.getTitle() + ".txt",
+                        videoInfo.getTitle(), FilesOperator.CHARSET_NAME, StandardOpenOption.CREATE);
             }
         }
     }
@@ -112,8 +112,8 @@ public class BilibiliConvertor {
             if (null == playUrlFile || null == videoInfoFile || !playUrlFile.exists() || !videoInfoFile.exists()) {
                 continue;
             }
-            PlayUrlInfo playUrlInfo = mapper.readValue(FilesUtils.readStringUseNio(playUrlFile.getPath(), FilesUtils.CHARSET_NAME), PlayUrlInfo.class);
-            VideoInfo videoInfo = mapper.readValue(FilesUtils.readStringUseNio(videoInfoFile.getPath(), FilesUtils.CHARSET_NAME), VideoInfo.class);
+            PlayUrlInfo playUrlInfo = mapper.readValue(FilesOperator.readStringUseNio(playUrlFile.getPath(), FilesOperator.CHARSET_NAME), PlayUrlInfo.class);
+            VideoInfo videoInfo = mapper.readValue(FilesOperator.readStringUseNio(videoInfoFile.getPath(), FilesOperator.CHARSET_NAME), VideoInfo.class);
             videoInfoMap.computeIfAbsent(videoInfo.getGroupId(), k -> new ArrayList<>()).add(videoInfo);
             playUrlInfoMap.computeIfAbsent(videoInfo.getGroupId(), k -> new HashMap()).put(videoInfo.getAid(), playUrlInfo);
             coverFileMap.computeIfAbsent(videoInfo.getGroupId(), k -> new HashMap()).put(videoInfo.getAid(), coverFile);
@@ -133,7 +133,7 @@ public class BilibiliConvertor {
                 IsSinglePart ? videoInfo.getCoverUrl() : videoInfo.getGroupCoverUrl(),
                 null,
                 videoInfo.getPubDate() - 1412092800,
-                DateTimeUtils.YMD_DASH_HM_COLON_DTF.format(LocalDateTime.ofEpochSecond(videoInfo.getPubDate(), 0, ZoneOffset.ofHours(8))),
+                DateTimeConvertor.YMD_DASH_HM_COLON_DTF.format(LocalDateTime.ofEpochSecond(videoInfo.getPubDate(), 0, ZoneOffset.ofHours(8))),
                 false,
                 false,
                 "00:00:00",
@@ -160,8 +160,8 @@ public class BilibiliConvertor {
                 2,
                 1,
                 videoInfo.getPubDate() - 1412092800,
-                DateTimeUtils.YMD_DASH_HM_COLON_DTF.format(LocalDateTime.ofEpochSecond(videoInfo.getPubDate(), 0, ZoneOffset.ofHours(8))),
-                DateTimeUtils.secondsToHMSMS(playUrlInfo.getData().getTimeLength())+"0000",
+                DateTimeConvertor.YMD_DASH_HM_COLON_DTF.format(LocalDateTime.ofEpochSecond(videoInfo.getPubDate(), 0, ZoneOffset.ofHours(8))),
+                DateTimeConvertor.secondsToHMSMS(playUrlInfo.getData().getTimeLength())+"0000",
                 Collections.singletonList(playUrlInfo.getData().getTimeLength()),
                 videoInfo.getTotalSize(),
                 null,
@@ -219,7 +219,7 @@ public class BilibiliConvertor {
                 playUrlDataDashMediaInfo.getWidth(),
                 playUrlDataDashMediaInfo.getHeight(),
                 playUrlDataDashMediaInfo.getBandWidth(),
-                new BigDecimal(StringsUtils.isNotEmpty(playUrlDataDashMediaInfo.getFrameRate())?playUrlDataDashMediaInfo.getFrameRate():"0.0")
+                new BigDecimal(StringsConvertor.isNotEmpty(playUrlDataDashMediaInfo.getFrameRate())?playUrlDataDashMediaInfo.getFrameRate():"0.0")
         );
     }
 
@@ -248,7 +248,7 @@ public class BilibiliConvertor {
                 playUrlDataDashMediaInfo.getWidth(),
                 playUrlDataDashMediaInfo.getHeight(),
                 playUrlDataDashMediaInfo.getBandWidth(),
-                new BigDecimal(StringsUtils.isNotEmpty(playUrlDataDashMediaInfo.getFrameRate())?playUrlDataDashMediaInfo.getFrameRate():"0.0")
+                new BigDecimal(StringsConvertor.isNotEmpty(playUrlDataDashMediaInfo.getFrameRate())?playUrlDataDashMediaInfo.getFrameRate():"0.0")
         );
     }
 

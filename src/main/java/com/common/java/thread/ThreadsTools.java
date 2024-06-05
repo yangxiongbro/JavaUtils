@@ -1,9 +1,9 @@
-package com.common.java.utils;
+package com.common.java.thread;
 
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * <b><code>ThreadsUtils</code></b>
+ * <b><code>ThreadsTools</code></b>
  * <p/>
  * 线程有关工具方法类
  * <p/>
@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
  * @since CommonJava 1.0
  */
 @Slf4j
-public class ThreadsUtils {
+public class ThreadsTools {
 
     /**
      * @description: Thread.sleep(millis)
@@ -25,6 +25,7 @@ public class ThreadsUtils {
      **/
     public static boolean sleep(long millis) {
         boolean result = true;
+        log.info("休眠: {}ms", millis);
         if (millis > 0L) {
             try {
                 Thread.sleep(millis);

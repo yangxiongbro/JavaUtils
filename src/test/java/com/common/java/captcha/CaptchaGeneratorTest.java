@@ -29,4 +29,5 @@ public class CaptchaGeneratorTest {
         CaptchaGenerator.output(captcha.getValue(), fos);
         fos.close();
     }
+    // https://www.zhihu.com/tardis/bd/art/620969977?source_id=1001
 }

@@ -1,4 +1,4 @@
-package com.common.java.utils;
+package com.common.java.file;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * <b><code>FilesUtilsTest</code></b>
+ * <b><code>FilesOperatorTest</code></b>
  * <p/>
  * <p>
  * <p/>
@@ -19,11 +19,11 @@ import java.util.List;
  * @since CommonJava 1.0
  */
 @Slf4j
-public class FilesUtilsTest {
+public class FilesOperatorTest {
 
     @Test
     public void mkdirs(){
-        Boolean result = FilesUtils.mkdirs("C:\\Users\\young\\Desktop\\");
+        Boolean result = FilesOperator.mkdirs("C:\\Users\\young\\Desktop\\");
         log.info("{}", result);
     }
 
@@ -36,7 +36,7 @@ public class FilesUtilsTest {
         long startTime, endTime;
         for(String filePath:filePaths){
             startTime = System.currentTimeMillis();
-            String result = FilesUtils.readStringUseNio(filePath, FilesUtils.CHARSET_NAME);
+            String result = FilesOperator.readStringUseNio(filePath, FilesOperator.CHARSET_NAME);
             endTime = System.currentTimeMillis();
             log.info("{}ms-{}", endTime-startTime, filePath);
         }
@@ -51,7 +51,7 @@ public class FilesUtilsTest {
         long startTime, endTime;
         for(String filePath:filePaths){
             startTime = System.currentTimeMillis();
-            List<String> result = FilesUtils.readAllLinesUseReader(filePath, FilesUtils.CHARSET_NAME);
+            List<String> result = FilesOperator.readAllLinesUseReader(filePath, FilesOperator.CHARSET_NAME);
             endTime = System.currentTimeMillis();
             log.info("{}ms-{}", endTime-startTime, filePath);
         }
@@ -66,7 +66,7 @@ public class FilesUtilsTest {
         long startTime, endTime;
         for(String filePath:filePaths){
             startTime = System.currentTimeMillis();
-            FilesUtils.readAllLinesUseReader(filePath, FilesUtils.CHARSET_NAME, (line) -> {});
+            FilesOperator.readAllLinesUseReader(filePath, FilesOperator.CHARSET_NAME, (line) -> {});
             endTime = System.currentTimeMillis();
             log.info("{}ms-{}", endTime-startTime, filePath);
         }
@@ -81,7 +81,7 @@ public class FilesUtilsTest {
         long startTime, endTime;
         for(String filePath:filePaths){
             startTime = System.currentTimeMillis();
-            List<String> result = FilesUtils.readAllLinesUseNioReader(filePath, FilesUtils.CHARSET_NAME);
+            List<String> result = FilesOperator.readAllLinesUseNioReader(filePath, FilesOperator.CHARSET_NAME);
             endTime = System.currentTimeMillis();
             log.info("{}ms-{}", endTime-startTime, filePath);
         }
@@ -96,7 +96,7 @@ public class FilesUtilsTest {
         long startTime, endTime;
         for(String filePath:filePaths){
             startTime = System.currentTimeMillis();
-            FilesUtils.readAllLinesUseNioReader(filePath, FilesUtils.CHARSET_NAME, (line) -> {});
+            FilesOperator.readAllLinesUseNioReader(filePath, FilesOperator.CHARSET_NAME, (line) -> {});
             endTime = System.currentTimeMillis();
             log.info("{}ms-{}", endTime-startTime, filePath);
         }
@@ -111,7 +111,7 @@ public class FilesUtilsTest {
         long startTime, endTime;
         for(String filePath:filePaths){
             startTime = System.currentTimeMillis();
-            List<String> result = FilesUtils.readAllLinesUseNioStream(filePath, FilesUtils.CHARSET_NAME);
+            List<String> result = FilesOperator.readAllLinesUseNioStream(filePath, FilesOperator.CHARSET_NAME);
             endTime = System.currentTimeMillis();
             log.info("{}ms-{}", endTime-startTime, filePath);
         }
@@ -126,7 +126,7 @@ public class FilesUtilsTest {
         long startTime, endTime;
         for(String filePath:filePaths){
             startTime = System.currentTimeMillis();
-            FilesUtils.readAllLinesUseNioStream(filePath, FilesUtils.CHARSET_NAME, (line) -> {});
+            FilesOperator.readAllLinesUseNioStream(filePath, FilesOperator.CHARSET_NAME, (line) -> {});
             endTime = System.currentTimeMillis();
             log.info("{}ms-{}", endTime-startTime, filePath);
         }
@@ -134,38 +134,38 @@ public class FilesUtilsTest {
 
     @Test
     public void writeAllLinesUseNio(){
-        FilesUtils.writeAllLinesUseNio(
+        FilesOperator.writeAllLinesUseNio(
                 "C:\\Users\\young\\Desktop\\writeAllLinesUseNio.txt",
                 "Hello World!",
-                FilesUtils.CHARSET_NAME,
+                FilesOperator.CHARSET_NAME,
                 StandardOpenOption.CREATE);
     }
 
     @Test
     public void writeAllLinesUseWriter(){
-        FilesUtils.writeAllLinesUseWriter(
+        FilesOperator.writeAllLinesUseWriter(
                 "C:\\Users\\young\\Desktop\\writeAllLinesUseWriter.txt",
                 Collections.singletonList("Hello World!"),
-                FilesUtils.CHARSET_NAME,
+                FilesOperator.CHARSET_NAME,
                 false);
     }
 
     @Test
     public void writeAllLinesUseNioWriter(){
-        FilesUtils.writeAllLinesUseNioWriter(
+        FilesOperator.writeAllLinesUseNioWriter(
                 "C:\\Users\\young\\Desktop\\readAllLinesUseNioWriter.txt",
                 Collections.singletonList("Hello World!"),
-                FilesUtils.CHARSET_NAME,
+                FilesOperator.CHARSET_NAME,
                 StandardOpenOption.CREATE);
     }
 
     @Test
     public void copyUseNio(){
-        FilesUtils.copyUseNio(
+        FilesOperator.copyUseNio(
                 "D:\\documents\\notes\\solid\\摄影.MD",
                 "C:\\Users\\young\\Desktop\\摄影.MD",
                 StandardCopyOption.REPLACE_EXISTING);
-        FilesUtils.copyUseNio(
+        FilesOperator.copyUseNio(
                 "D:\\Pictures\\JPG\\Processed\\DSC06413.JPG",
                 "C:\\Users\\young\\Desktop\\DSC06413.JPG",
                 StandardCopyOption.REPLACE_EXISTING);

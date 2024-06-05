@@ -1,11 +1,11 @@
-package com.common.java.utils;
+package com.common.java.string;
 
 import com.common.java.constants.StringsConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
 /**
- * <b><code>StringsUtilsTest</code></b>
+ * <b><code>StringsConvertorTest</code></b>
  * <p/>
  * <p>
  * <p/>
@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
  * @since CommonJava 1.0
  */
 @Slf4j
-public class StringsUtilsTest {
+public class StringsConvertorTest {
 
     private String str2DArray[][] = new String[][]{
             new String[]{"first", "name"},
@@ -39,70 +39,63 @@ public class StringsUtilsTest {
     @Test
     public void upperCamelCase2allCapsCase(){
         for(String str:strArray){
-            log.info("{} -> {}", str, StringsUtils.upperCamelCase2allCapsCase(str));
+            log.info("{} -> {}", str, StringsConvertor.upperCamelCase2allCapsCase(str));
         }
     }
 
     @Test
     public void lowerCamelCase(){
         for(String[] strArray:str2DArray){
-            log.info("{} -> {}", strArray, StringsUtils.lowerCamelCase(strArray));
+            log.info("{} -> {}", strArray, StringsConvertor.lowerCamelCase(strArray));
         }
     }
 
     @Test
     public void upperCamelCase(){
         for(String[] strArray:str2DArray){
-            log.info("{} -> {}", strArray, StringsUtils.upperCamelCase(strArray));
+            log.info("{} -> {}", strArray, StringsConvertor.upperCamelCase(strArray));
         }
     }
 
     @Test
     public void pascalCase(){
         for(String[] strArray:str2DArray){
-            log.info("{} -> {}", strArray, StringsUtils.pascalCase(strArray));
+            log.info("{} -> {}", strArray, StringsConvertor.pascalCase(strArray));
         }
     }
 
     @Test
     public void snakeCase(){
         for(String[] strArray:str2DArray){
-            log.info("{} -> {}", strArray, StringsUtils.snakeCase(strArray));
+            log.info("{} -> {}", strArray, StringsConvertor.snakeCase(strArray));
         }
     }
 
     @Test
     public void allCapsCase(){
         for(String[] strArray:str2DArray){
-            log.info("{} -> {}", strArray, StringsUtils.allCapsCase(strArray));
+            log.info("{} -> {}", strArray, StringsConvertor.allCapsCase(strArray));
         }
     }
 
     @Test
     public void split() {
         for(String str:strArray){
-            log.info("{} -> {}", str, StringsUtils.split(str, " ", -1));
+            log.info("{} -> {}", str, StringsConvertor.split(str, " ", -1));
         }
     }
 
     @Test
     public void split2() {
         for(String str:strArray){
-            log.info("{} -> {}", str, StringsUtils.split(str, StringsConstants.UPPER_CHAR_SET));
+            log.info("{} -> {}", str, StringsConvertor.split(str, StringsConstants.UPPER_CHAR_SET));
         }
     }
 
     @Test
     public void isNotEmpty() {
         for(String str:strArray){
-            log.info("{} -> {}", str, StringsUtils.isNotEmpty(str));
-        }
-    }
-
-    @Test
-    public void containsText() {
-        for(String str:strArray){
-            log.info("{} -> {}", str, StringsUtils.containsText(str));
+            log.info("{} -> {}", str, StringsConvertor.isNotEmpty(str));
         }
     }
 

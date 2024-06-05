@@ -1,11 +1,11 @@
-package com.common.java.utils;
+package com.common.java.date_time;
 
 import com.common.java.constants.DateTimeConstants;
 
 import java.time.format.DateTimeFormatter;
 
 /**
- * <b><code>DateTimeUtiles</code></b>
+ * <b><code>DateTimeConvertor</code></b>
  * <p/>
  * 时间相关组件
  * <p/>
@@ -14,8 +14,8 @@ import java.time.format.DateTimeFormatter;
  * @author yang xiong
  * @since CommonJava 1.0
  */
-public class DateTimeUtils {
-    private DateTimeUtils(){
+public class DateTimeConvertor {
+    private DateTimeConvertor(){
 
     }
 
