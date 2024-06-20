@@ -71,6 +71,23 @@
             <optional>true</optional>
         </dependency>
 
+<!--        如果有以下使用场景，需要额外导入 bcprov-jdk15on 的库-->
+<!--        JDK 10或更早的版本， 需要使用RSASSA-PSS (PS256, PS384, PS512) 签名算法-->
+<!--        JDK 10或更早的版本， 需要使用EdECDH（X25519 或 X448）椭圆曲线 Diffie-Hellman 加密。-->
+<!--        JDK14或更早版本， 需要使用EdDSA (Ed25519 or Ed448) 椭圆曲线签名算法-->
+<!--        如果是JDK15及之后的版本， 则不需要添加-->
+<!--        <dependency>-->
+<!--            <groupId>org.bouncycastle</groupId>-->
+<!--            <artifactId>bcprov-jdk15on</artifactId>-->
+<!--            <version>1.70</version>-->
+<!--            <scope>runtime</scope>-->
+<!--        </dependency>-->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.12.3</version>
+        </dependency>
+
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
