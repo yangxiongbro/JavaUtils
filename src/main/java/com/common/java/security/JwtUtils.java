@@ -1,5 +1,7 @@
 package com.common.java.security;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Encoders;
@@ -9,6 +11,7 @@ import io.jsonwebtoken.security.SignatureAlgorithm;
 import javax.crypto.SecretKey;
 import java.security.Key;
 import java.security.KeyPair;
+import java.security.PublicKey;
 import java.util.Date;
 import java.util.Map;
 
@@ -103,6 +106,38 @@ public class JwtUtils {
      **/
     public String generateJwtToken(Key key, String id, String subject, long expireSec){
         return generateJwtToken(key, null, null, id, subject, expireSec);
+    }
+
+    /**
+     * @description: 解析 jwt token
+     * @param: key - [PublicKey]
+     * @param: token - [String]
+     * @return: io.jsonwebtoken.Jws<io.jsonwebtoken.Claims>
+     * @throws
+     * @author yang xiong
+     * @date 2024/6/24 22:12
+     **/
+    public Jws<Claims> parseJwtToken(PublicKey key, String token){
+        return Jwts.parser()
+                .verifyWith(key) // <---- publicKey, not privateKey
+                .build()
+                .parseSignedClaims(token);
+    }
+
+    /**
+     * @description: 解析 jwt token
+     * @param: key - [SecretKey]
+     * @param: token - [String]
+     * @return: io.jsonwebtoken.Jws<io.jsonwebtoken.Claims>
+     * @throws
+     * @author yang xiong
+     * @date 2024/6/24 22:12
+     **/
+    public Jws<Claims> parseJwtToken(SecretKey key, String token){
+        return Jwts.parser()
+                .verifyWith(key)
+                .build()
+                .parseSignedClaims(token);
     }
 
 }
