@@ -79,4 +79,22 @@ public class MathUtils {
         }
         return false;
     }
+
+    /**
+     * @description: 转 double
+     * @param: num
+     * @return: java.lang.Double
+     * @throws
+     * @author yang xiong
+     * @date 2024/8/8 15:53
+     **/
+    public static Double convert2Double(Object num){
+        if(null == num){
+            return null;
+        } else if(num instanceof Number){
+            return ((Number) num).doubleValue();
+        } else {
+            return Double.valueOf(num.toString());
+        }
+    }
 }
