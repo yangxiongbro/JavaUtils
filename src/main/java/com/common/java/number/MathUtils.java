@@ -13,6 +13,9 @@ import com.common.java.number.enums.OperatorEnum;
  * @since CommonJava 0.1.0
  */
 public class MathUtils {
+
+    public static final String FLOAT_NUM_REG = "^\\d+.\\d*|\\d*.\\d+$";
+
     /**
      * @description: 计算比率，比率 = 比例 * 100
      * @param: numerator
@@ -93,8 +96,9 @@ public class MathUtils {
             return null;
         } else if(num instanceof Number){
             return ((Number) num).doubleValue();
-        } else {
+        } else if(num.toString().matches(FLOAT_NUM_REG)){
             return Double.valueOf(num.toString());
         }
+        return null;
     }
 }
