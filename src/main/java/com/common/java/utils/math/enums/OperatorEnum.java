@@ -1,4 +1,4 @@
-package com.common.java.number.enums;
+package com.common.java.utils.math.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

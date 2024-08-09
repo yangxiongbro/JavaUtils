@@ -1,6 +1,6 @@
-package com.common.java.number;
+package com.common.java.utils.math;
 
-import com.common.java.number.enums.OperatorEnum;
+import com.common.java.utils.math.enums.OperatorEnum;
 
 /**
  * <b><code>MathUtils</code></b>
@@ -14,7 +14,7 @@ import com.common.java.number.enums.OperatorEnum;
  */
 public class MathUtils {
 
-    public static final String FLOAT_NUM_REG = "^\\d+.\\d*|\\d*.\\d+$";
+    public static final String FLOAT_NUM_REG = "^\\d+\\.\\d*|\\d*\\.\\d+$";
 
     /**
      * @description: 计算比率，比率 = 比例 * 100

@@ -2,7 +2,7 @@ package com.common.java.tools.bilibili_convertor;
 
 import com.common.java.date_time.DateTimeConvertor;
 import com.common.java.file.FilesOperator;
-import com.common.java.string.StringsConvertor;
+import com.common.java.utils.string.StringsUtils;
 import com.common.java.vo.bilibili_convertor.desktop.*;
 import com.common.java.vo.bilibili_convertor.uwp.DviInfo;
 import com.common.java.vo.bilibili_convertor.uwp.PlayInfo;
@@ -219,7 +219,7 @@ public class BilibiliConvertor {
                 playUrlDataDashMediaInfo.getWidth(),
                 playUrlDataDashMediaInfo.getHeight(),
                 playUrlDataDashMediaInfo.getBandWidth(),
-                new BigDecimal(StringsConvertor.isNotEmpty(playUrlDataDashMediaInfo.getFrameRate())?playUrlDataDashMediaInfo.getFrameRate():"0.0")
+                new BigDecimal(StringsUtils.isNotEmpty(playUrlDataDashMediaInfo.getFrameRate())?playUrlDataDashMediaInfo.getFrameRate():"0.0")
         );
     }
 
@@ -248,7 +248,7 @@ public class BilibiliConvertor {
                 playUrlDataDashMediaInfo.getWidth(),
                 playUrlDataDashMediaInfo.getHeight(),
                 playUrlDataDashMediaInfo.getBandWidth(),
-                new BigDecimal(StringsConvertor.isNotEmpty(playUrlDataDashMediaInfo.getFrameRate())?playUrlDataDashMediaInfo.getFrameRate():"0.0")
+                new BigDecimal(StringsUtils.isNotEmpty(playUrlDataDashMediaInfo.getFrameRate())?playUrlDataDashMediaInfo.getFrameRate():"0.0")
         );
     }
 

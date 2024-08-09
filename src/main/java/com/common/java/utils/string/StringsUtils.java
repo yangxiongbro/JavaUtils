@@ -1,4 +1,4 @@
-package com.common.java.string;
+package com.common.java.utils.string;
 
 import com.common.java.constants.StringsConstants;
 
@@ -7,16 +7,17 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * <b><code>StringsConvertor</code></b>
+ * <b><code>StringsUtils</code></b>
  * <p/>
- * 字符串工具类
+ * 字符串组件
  * <p/>
- * <b>Creation Time:</b> 2023/11/21 22:07
+ * <b>Creation Time:</b> 2024/8/9 18:34
  *
  * @author yang xiong
- * @since CommonJava 1.0
+ * @since CommonJava 0.1.0
  */
-public class StringsConvertor {
+public class StringsUtils {
+
 
     /**
      * @description: 大驼峰命名法转全部大写命名法
@@ -206,7 +207,7 @@ public class StringsConvertor {
      * @param: str - [String]
      * @param: charSet - [Byte>]
      * @return: java.lang.String[]
-     * @throws 
+     * @throws
      * @author yang xiong
      * @date 2023/11/22 23:54
      **/
@@ -245,4 +246,55 @@ public class StringsConvertor {
         return false;
     }
 
+    /**
+     * @description: 去除首位空白字符
+     * @param: str
+     * @return: java.lang.String
+     * @throws
+     * @author yang xiong
+     * @date 2024/8/9 18:36
+     **/
+    public static String trim(String str){
+        if(null != str && isNotEmpty(str.trim())){
+            return str.trim();
+        }
+        return null;
+    }
+
+    /**
+     * @description: 提取开始符号，结束符号之间的字符(不包括开始、结束字符)
+     * @param: str
+     * @param: startStr
+     * @param: endStr
+     * @return: java.lang.String
+     * @throws
+     * @author yang xiong
+     * @date 2024/8/9 17:58
+     **/
+    public static String extractFrom(String str, String startStr, String endStr){
+        if(null == str || null == startStr || null == endStr){
+            return null;
+        }
+        int startIndex = str.lastIndexOf(startStr);
+        int endIndex = str.lastIndexOf(endStr);
+        return -1 < startIndex && startIndex < endIndex ? str.substring(startIndex + 1, endIndex) : null;
+    }
+
+    /**
+     * @description: 提取结束符号之前的字符(不包括开结束字符)
+     * @param: str
+     * @param: startStr
+     * @param: endStr
+     * @return: java.lang.String
+     * @throws
+     * @author yang xiong
+     * @date 2024/8/9 18:25
+     **/
+    public static String extractPrevious(String str, String endStr){
+        if(null == str){
+            return null;
+        }
+        int endIndex = null == endStr ? str.length() : str.lastIndexOf(endStr);
+        return -1 < endIndex ? str.substring(0, endIndex) : str;
+    }
 }
