@@ -277,7 +277,7 @@ public class StringsUtils {
         }
         int startIndex = str.lastIndexOf(startStr);
         int endIndex = str.lastIndexOf(endStr);
-        return -1 < startIndex && startIndex < endIndex ? str.substring(startIndex + 1, endIndex) : null;
+        return -1 < startIndex && startIndex < endIndex ? str.substring(startIndex + startStr.length(), endIndex) : null;
     }
 
     /**
@@ -296,5 +296,23 @@ public class StringsUtils {
         }
         int endIndex = null == endStr ? str.length() : str.lastIndexOf(endStr);
         return -1 < endIndex ? str.substring(0, endIndex) : str;
+    }
+
+    /**
+     * @description: 提取开始符号之后的字符(不包括开开始字符)
+     * @param: str
+     * @param: startStr
+     * @param: endStr
+     * @return: java.lang.String
+     * @throws
+     * @author yang xiong
+     * @date 2024/8/9 18:25
+     **/
+    public static String extractAfter(String str, String startStr){
+        if(null == str){
+            return null;
+        }
+        int startIndex = null == startStr ? 0 : str.indexOf(startStr);
+        return -1 < startIndex ? str.substring(startIndex + startStr.length()) : str;
     }
 }
