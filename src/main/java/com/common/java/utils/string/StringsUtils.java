@@ -275,7 +275,7 @@ public class StringsUtils {
         if(null == str || null == startStr || null == endStr){
             return null;
         }
-        int startIndex = str.lastIndexOf(startStr);
+        int startIndex = str.indexOf(startStr);
         int endIndex = str.lastIndexOf(endStr);
         return -1 < startIndex && startIndex < endIndex ? str.substring(startIndex + startStr.length(), endIndex) : null;
     }
@@ -313,6 +313,7 @@ public class StringsUtils {
             return null;
         }
         int startIndex = null == startStr ? 0 : str.indexOf(startStr);
-        return -1 < startIndex ? str.substring(startIndex + startStr.length()) : str;
+        int startStrLen = null == startStr ? 0 : startStr.length();
+        return -1 < startIndex ? str.substring(startIndex + startStrLen) : str;
     }
 }
