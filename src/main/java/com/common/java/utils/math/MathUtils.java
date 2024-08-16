@@ -62,7 +62,7 @@ public class MathUtils {
      * @date 2024/8/7 15:39
      **/
     public static boolean judge(OperatorEnum operator, Number target, Number threshold){
-        if(null == target || null == threshold){
+        if(null == operator || null == target || null == threshold){
             return false;
         }
         double dTarget = target.doubleValue();

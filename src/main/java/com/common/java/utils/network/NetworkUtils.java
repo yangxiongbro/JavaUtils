@@ -1,8 +1,5 @@
 package com.common.java.utils.network;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * <b><code>NetworkUtils</code></b>
  * <p/>
@@ -22,6 +19,10 @@ public class NetworkUtils {
     public static final String HEX_IP_NUM_REG="^[0-9a-fA-F]{1,8}$";
 
     public static final String IPV4_REG="^(((\\d)|([1-9]\\d)|(1\\d{2})|(2[0-4]\\d)|(25[0-5]))\\.){3}((\\d)|([1-9]\\d)|(1\\d{2})|(2[0-4]\\d)|(25[0-5]))$";
+
+//    public static String requestOriginIpAddr(HttpServletRequest request){
+//        return null;
+//    }
 
     /**
      * @description: 16 进制 数字转 ipv4
